@@ -1,33 +1,27 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+const endpoint = "https://backendwebiot-production.up.railway.app";
 
-app.use(cors());
-app.use(bodyParser.json());
+function setTaman(taman, status) {
+  fetch(`${endpoint}/api/${taman}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ status })
+  }).then(() => getTamanStatus(taman));
+}
 
-let taman1State = "OFF";
+function getTamanStatus(taman) {
+  fetch(`${endpoint}/api/${taman}`)
+    .then(res => res.json())
+    .then(data => {
+      const img = document.getElementById(`waterTamanImage${taman.replace('taman', '')}`);
+      if (data.status === "ON") {
+        img.src = "assets/watering-on.png";
+      } else {
+        img.src = "assets/watering-off.png";
+      }
+    });
+}
 
-app.get('/api/taman1', (req, res) => {
-  res.json({ status: taman1State });
-});
-
-app.post('/api/taman1', (req, res) => {
-  const { status } = req.body;
-  if (status === "ON" || status === "OFF") {
-    taman1State = status;
-    res.json({ success: true, status: taman1State });
-  } else {
-    res.status(400).json({ success: false, message: "Invalid status" });
-  }
-});
-
-app.get('/', (req, res) => {
-  res.send('ESP Backend API Running');
-});
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+['taman1', 'taman2', 'taman3', 'taman4'].forEach(getTamanStatus);
