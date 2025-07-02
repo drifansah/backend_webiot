@@ -29,7 +29,6 @@ function writeData(data) {
   fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
 }
 
-// 🚨 FRONTEND mengirim perintah (command)
 app.post("/api/:taman/command", (req, res) => {
   const { taman } = req.params;
   const { command } = req.body;
@@ -44,7 +43,6 @@ app.post("/api/:taman/command", (req, res) => {
   }
 });
 
-// 🚨 ESP8266 membaca perintah dari backend
 app.get("/api/:taman/command", (req, res) => {
   const { taman } = req.params;
   const data = readData();
@@ -56,7 +54,6 @@ app.get("/api/:taman/command", (req, res) => {
   }
 });
 
-// ✅ ESP8266 mengirim konfirmasi relay berhasil diubah
 app.post("/api/:taman", (req, res) => {
   const { taman } = req.params;
   const { status } = req.body;
@@ -71,7 +68,6 @@ app.post("/api/:taman", (req, res) => {
   }
 });
 
-// ✅ FRONTEND membaca status hasil konfirmasi ESP
 app.get("/api/:taman", (req, res) => {
   const { taman } = req.params;
   const data = readData();
