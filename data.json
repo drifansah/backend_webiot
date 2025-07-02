@@ -1,18 +1,6 @@
 {
-  "taman1": {
-    "command": "ON",
-    "status": "OFF"
-  },
-  "taman2": {
-    "command": "OFF",
-    "status": "OFF"
-  },
-  "taman3": {
-    "command": "OFF",
-    "status": "OFF"
-  },
-  "taman4": {
-    "command": "OFF",
-    "status": "OFF"
-  }
+  "taman1": { "command": "OFF", "status": "OFF" },
+  "taman2": { "command": "OFF", "status": "OFF" },
+  "taman3": { "command": "OFF", "status": "OFF" },
+  "taman4": { "command": "OFF", "status": "OFF" }
 }
