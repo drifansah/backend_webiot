@@ -8,6 +8,8 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
+app.use(express.json());
+
 
 // Simpan status lampu di memori (sifatnya sementara)
 let status = {
