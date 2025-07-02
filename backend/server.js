@@ -1,27 +1,49 @@
+const express = require("express");
+const bodyParser = require("body-parser");
+const cors = require("cors");
 
-const endpoint = "https://backendwebiot-production.up.railway.app";
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-function setTaman(taman, status) {
-  fetch(`${endpoint}/api/${taman}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ status })
-  }).then(() => getTamanStatus(taman));
-}
+// Middleware
+app.use(cors());
+app.use(bodyParser.json());
 
-function getTamanStatus(taman) {
-  fetch(`${endpoint}/api/${taman}`)
-    .then(res => res.json())
-    .then(data => {
-      const img = document.getElementById(`waterTamanImage${taman.replace('taman', '')}`);
-      if (data.status === "ON") {
-        img.src = "assets/watering-on.png";
-      } else {
-        img.src = "assets/watering-off.png";
-      }
-    });
-}
+// Simpan status lampu di memori (sifatnya sementara)
+let status = {
+  taman1: "OFF",
+  taman2: "OFF",
+  taman3: "OFF",
+  taman4: "OFF"
+};
 
-['taman1', 'taman2', 'taman3', 'taman4'].forEach(getTamanStatus);
+// Endpoint GET status
+app.get("/api/:taman", (req, res) => {
+  const { taman } = req.params;
+  if (status[taman] !== undefined) {
+    res.json({ status: status[taman] });
+  } else {
+    res.status(404).json({ error: "Taman tidak ditemukan" });
+  }
+});
+
+// Endpoint POST ubah status
+app.post("/api/:taman", (req, res) => {
+  const { taman } = req.params;
+  const { status: newStatus } = req.body;
+
+  if (status[taman] !== undefined && (newStatus === "ON" || newStatus === "OFF")) {
+    status[taman] = newStatus;
+    res.json({ success: true, status: newStatus });
+  } else {
+    res.status(400).json({ error: "Data tidak valid" });
+  }
+});
+
+// Menyajikan file frontend dari folder public
+app.use(express.static("public"));
+
+// Jalankan server
+app.listen(PORT, () => {
+  console.log(`🚀 Server is running at http://localhost:${PORT}`);
+});
