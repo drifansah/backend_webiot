@@ -43,7 +43,7 @@ app.post("/api/:taman", (req, res) => {
 });
 
 // Menyajikan file frontend dari folder public
-app.use(express.static("public"));
+// app.use(express.static("public"));
 
 // Jalankan server
 app.listen(PORT, () => {
