@@ -29,19 +29,33 @@ function writeData(data) {
   fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
 }
 
-// app.post("/api/:taman/command", (req, res) => {
-//   const { taman } = req.params;
-//   const { command } = req.body;
-//   const data = readData();
+app.post("/api/:taman/command", (req, res) => {
+  const { taman } = req.params;
+  const { command } = req.body;
+  const data = readData();
 
-//   if (data[taman] && (command === "ON" || command === "OFF")) {
-//     data[taman].command = command;
-//     writeData(data);
-//     res.json({ success: true, command });
-//   } else {
-//     res.status(400).json({ error: "Taman tidak ditemukan atau command salah" });
-//   }
-// });
+  if (data[taman] && (command === "ON" || command === "OFF" || command === "SLEEP" )) {
+    data[taman].command = command;
+    writeData(data);
+    res.json({ success: true, command });
+  } else {
+    res.status(400).json({ error: "Taman tidak ditemukan atau command salah" });
+  }
+});
+
+
+app.get("/api/:taman/command", (req, res) => {
+  const { taman } = req.params;
+  const data = readData();
+
+  if (data[taman]) {
+    res.json({ command: data[taman].command });
+  } else {
+    res.status(404).json({ error: "Taman tidak ditemukan" });
+  }
+});
+
+
 app.post("/api/:taman/command", (req, res) => {
   const { taman } = req.params;
   const { status } = req.body;
@@ -56,55 +70,17 @@ app.post("/api/:taman/command", (req, res) => {
   }
 });
 
-app.get("/api/:taman/command", (req, res) => {
+
+app.get("/api/:taman", (req, res) => {
   const { taman } = req.params;
   const data = readData();
 
   if (data[taman]) {
-    res.json({ command: data[taman].command });
+    res.json({ status: data[taman].status });
   } else {
     res.status(404).json({ error: "Taman tidak ditemukan" });
   }
 });
-
-// app.post("/api/:taman", (req, res) => {
-//   const { taman } = req.params;
-//   const { status } = req.body;
-//   const data = readData();
-
-//   if (data[taman] && (status === "ON" || status === "OFF")) {
-//     data[taman].status = status;
-//     writeData(data);
-//     res.json({ success: true, status });
-//   } else {
-//     res.status(400).json({ error: "Taman tidak ditemukan atau status salah" });
-//   }
-// });
-// app.post("/api/:taman/command", (req, res) => {
-//   const { taman } = req.params;
-//   const { status } = req.body;
-//   const data = readData();
-
-//   if (data[taman] && (status === "ON" || status === "OFF" || status === "SLEEP")) {
-//     data[taman].status = status;
-//     writeData(data);
-//     res.json({ success: true, status });
-//   } else {
-//     res.status(400).json({ error: "Taman tidak ditemukan atau command salah" });
-//   }
-// });
-
-
-// app.get("/api/:taman", (req, res) => {
-//   const { taman } = req.params;
-//   const data = readData();
-
-//   if (data[taman]) {
-//     res.json({ status: data[taman].status });
-//   } else {
-//     res.status(404).json({ error: "Taman tidak ditemukan" });
-//   }
-// });
 
 app.listen(PORT, () => {
   console.log(`🚀 Backend ready at http://localhost:${PORT}`);
