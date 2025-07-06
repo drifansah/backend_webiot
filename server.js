@@ -54,19 +54,33 @@ app.get("/api/:taman/command", (req, res) => {
   }
 });
 
-app.post("/api/:taman", (req, res) => {
+// app.post("/api/:taman", (req, res) => {
+//   const { taman } = req.params;
+//   const { status } = req.body;
+//   const data = readData();
+
+//   if (data[taman] && (status === "ON" || status === "OFF")) {
+//     data[taman].status = status;
+//     writeData(data);
+//     res.json({ success: true, status });
+//   } else {
+//     res.status(400).json({ error: "Taman tidak ditemukan atau status salah" });
+//   }
+// });
+app.post("/api/:taman/command", (req, res) => {
   const { taman } = req.params;
   const { status } = req.body;
   const data = readData();
 
-  if (data[taman] && (status === "ON" || status === "OFF")) {
+  if (data[taman] && (status === "ON" || status === "OFF" || status === "SLEEP")) {
     data[taman].status = status;
     writeData(data);
     res.json({ success: true, status });
   } else {
-    res.status(400).json({ error: "Taman tidak ditemukan atau status salah" });
+    res.status(400).json({ error: "Taman tidak ditemukan atau command salah" });
   }
 });
+
 
 app.get("/api/:taman", (req, res) => {
   const { taman } = req.params;
