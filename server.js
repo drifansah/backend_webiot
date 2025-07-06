@@ -56,7 +56,7 @@ app.get("/api/:taman/command", (req, res) => {
 });
 
 
-app.post("/api/:taman/command", (req, res) => {
+app.post("/api/:taman/status", (req, res) => {
   const { taman } = req.params;
   const { status } = req.body;
   const data = readData();
