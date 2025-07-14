@@ -85,7 +85,7 @@ app.get("/api/:taman", (req, res) => {
 app.post("/api/login", (req, res) => {
   const { username, password } = req.body;
 
-  if (username === "admin" && password === "1234") {
+  if (username === "kelompok2" && password === "1234") {
     // Kirim token sebagai tanda login sukses
     const token = "tokensecret"; // idealnya gunakan JWT asli
     res.json({ success: true, token });
