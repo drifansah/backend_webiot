@@ -81,24 +81,6 @@ app.get("/api/:taman", (req, res) => {
     res.status(404).json({ error: "Taman tidak ditemukan" });
   }
 });
-// server.js (Express backend)
-app.post("/api/login", (req, res) => {
-  const { username, password } = req.body;
-
-  if (username === "kelompok2" && password === "1234") {
-    // Kirim token sebagai tanda login sukses
-    const token = "tokensecret"; // idealnya gunakan JWT asli
-    res.json({ success: true, token });
-  } else {
-    res.json({ success: false });
-  }
-});
-
-app.post("/api/validate-token", (req, res) => {
-  const { token } = req.body;
-  res.json({ valid: token === "tokensecret" });
-});
-
 
 app.listen(PORT, () => {
   console.log(`🚀 Backend ready at http://localhost:${PORT}`);
